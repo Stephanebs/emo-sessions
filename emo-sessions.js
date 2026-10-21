@@ -110,8 +110,10 @@
     if (prochaine) {
       v.prochaine = dateLongue(prochaine.debut);
       v.prochaine_avec_jour = dateAvecJour(prochaine.debut);
+      v.prochaine_avec_jour_min = fr(prochaine.debut, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
       v.prochaine_cloture = dateLongue(prochaine.cloture);
       v.prochaine_cloture_sans_annee = dateSansAnnee(prochaine.cloture);
+      v.prochaine_cloture_courte = fr(prochaine.cloture, { day: 'numeric', month: 'short' });
     }
     return v;
   }
@@ -183,12 +185,15 @@
     return { choix: '', indisponible: connue ? dateLongue(connue.debut) : null };
   }
 
-  function creerSelecteur(conteneur, donnees) {
+  var styleAjoute = false;
+
+  // id : identifiant unique de la liste ; avant : élément devant lequel l'insérer (par défaut, en tête du conteneur)
+  function creerSelecteur(conteneur, donnees, id, avant) {
     var bloc = document.createElement('div');
     bloc.className = 'emo-session-choix';
     bloc.innerHTML =
-      '<label for="emo-session-select">Date de session <span aria-hidden="true">*</span></label>' +
-      '<select id="emo-session-select" required></select>' +
+      '<label for="' + id + '">Date de session <span aria-hidden="true">*</span></label>' +
+      '<select id="' + id + '" required></select>' +
       '<p class="emo-session-info"></p>' +
       '<p class="emo-session-note" role="status"></p>';
     var select = bloc.querySelector('select');
@@ -226,6 +231,13 @@
       note.textContent = 'La session du ' + demande.indisponible + ' n’est plus ouverte aux inscriptions. Choisissez une autre date.';
     }
 
+    if (!styleAjoute) ajouterStyle();
+    conteneur.insertBefore(bloc, avant || conteneur.firstChild);
+    return { select: select, note: note };
+  }
+
+  function ajouterStyle() {
+    styleAjoute = true;
     var style = document.createElement('style');
     style.textContent =
       '.emo-session-choix{margin:0 0 12px;text-align:left}' +
@@ -237,9 +249,6 @@
       '.emo-session-note{font-size:13px;margin:6px 0 0;color:#b3261e}' +
       '.emo-session-note:empty{display:none}';
     document.head.appendChild(style);
-
-    conteneur.insertBefore(bloc, conteneur.firstChild);
-    return { select: select, note: note };
   }
 
   // Écrit une valeur dans un champ géré par React (formulaire Systeme.io)
@@ -305,10 +314,25 @@
   }
 
   function rendreFormulaire(donnees) {
+    // Formulaire Systeme.io affiché dans un cadre (Management, Achats)
     var conteneur = document.querySelector(CFG.formulaire);
-    if (!conteneur || conteneur._emoSession) return;
-    conteneur._emoSession = true;
-    brancherIframe(conteneur, creerSelecteur(conteneur, donnees));
+    if (conteneur && !conteneur._emoSession) {
+      conteneur._emoSession = true;
+      brancherIframe(conteneur, creerSelecteur(conteneur, donnees, 'emo-session-select'));
+    }
+
+    // Formulaires HTML envoyés directement à Systeme.io (Merchandising, Techniques de vente) :
+    // la liste porte elle-même le nom du champ et part avec le formulaire
+    document.querySelectorAll('form[action*="systeme.io/embedded/"]').forEach(function (form, i) {
+      if (form._emoSession) return;
+      form._emoSession = true;
+      var avant = form.querySelector('.emo-optin') || form.querySelector('[type="submit"]');
+      while (avant && avant.parentElement !== form) avant = avant.parentElement;
+      var ui = creerSelecteur(form, donnees, 'emo-session-select-' + (i + 1), avant);
+      ui.select.parentElement.classList.add('emo-fg'); // reprend le style des autres champs de la page
+      ui.select.name = CFG.champ;
+      ui.select.addEventListener('change', function () { ui.note.textContent = ''; });
+    });
   }
 
   // ---------- Démarrage ----------
