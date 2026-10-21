@@ -156,10 +156,13 @@
       });
     });
 
-    // Blocs liés à une session précise (ex. offre duo) : visibles seulement tant que la session est réservable
+    // Blocs liés à une session (ex. offre duo) : visibles seulement tant que la session est réservable.
+    // Valeur « prochaine » = la prochaine session réservable, quelle qu'elle soit.
     document.querySelectorAll('[data-emo-si-session]').forEach(function (el) {
       var code = el.getAttribute('data-emo-si-session');
-      var s = donnees && donnees.reservables.filter(function (x) { return x.code === code; })[0];
+      var s = donnees && (code === 'prochaine'
+        ? donnees.reservables[0]
+        : donnees.reservables.filter(function (x) { return x.code === code; })[0]);
       if (!s) { el.style.display = 'none'; return; }
       if (!el._emoTpl) el._emoTpl = el.innerHTML;
       el.innerHTML = remplir(el._emoTpl, valeursSession(s, 0));
