@@ -105,7 +105,10 @@
       pluriel: visibles.length > 1 ? 's' : '',
       courtes: joindre(visibles.map(function (s) { return dateCourte(s.debut); }), ', ', ' & '),
       longues: joindre(visibles.map(function (s) { return dateLongue(s.debut); }), ', ', ' ou '),
-      longues_le: joindre(visibles.map(function (s) { return 'le ' + dateLongue(s.debut); }), ', ', ' ou ')
+      longues_le: joindre(visibles.map(function (s) { return 'le ' + dateLongue(s.debut); }), ', ', ' ou '),
+      longues_jour_et: joindre(visibles.map(function (s) {
+        return fr(s.debut, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      }), ', ', ' et ')
     };
     if (prochaine) {
       v.prochaine = dateLongue(prochaine.debut);
