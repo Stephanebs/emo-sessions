@@ -3,17 +3,6 @@
   "source": "Airtable Promo",
   "sessions": [
     {
-      "code": "ACHA-2026-11-12",
-      "formation": "ACHA",
-      "debut": "2026-11-12",
-      "fin": "2026-11-12",
-      "statut": "ouverte",
-      "cloture": "2026-11-02",
-      "duree": null,
-      "jours": null,
-      "prix_ht": "720 €"
-    },
-    {
       "code": "MGMT-2026-11-26",
       "formation": "MGMT",
       "debut": "2026-11-26",
@@ -168,5 +157,5 @@
       "prix_ht": "720 €"
     }
   ],
-  "genere_le": "2026-10-21T16:29:15.340Z"
+  "genere_le": "2026-11-13T04:02:31.006Z"
 }
