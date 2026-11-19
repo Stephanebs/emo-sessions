@@ -3,17 +3,6 @@
   "source": "Airtable Promo",
   "sessions": [
     {
-      "code": "MGMT-2026-11-26",
-      "formation": "MGMT",
-      "debut": "2026-11-26",
-      "fin": "2026-11-26",
-      "statut": "ouverte",
-      "cloture": "2026-11-16",
-      "duree": "8h",
-      "jours": null,
-      "prix_ht": "720 €"
-    },
-    {
       "code": "TDV-2026-11-27",
       "formation": "TDV",
       "debut": "2026-11-27",
@@ -157,5 +146,5 @@
       "prix_ht": "720 €"
     }
   ],
-  "genere_le": "2026-11-13T04:02:31.006Z"
+  "genere_le": "2026-11-19T11:00:32.238Z"
 }
