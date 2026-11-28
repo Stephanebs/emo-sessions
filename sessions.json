@@ -3,17 +3,6 @@
   "source": "Airtable Promo",
   "sessions": [
     {
-      "code": "TDV-2026-11-27",
-      "formation": "TDV",
-      "debut": "2026-11-27",
-      "fin": "2026-11-27",
-      "statut": "ouverte",
-      "cloture": "2026-11-17",
-      "duree": "7h",
-      "jours": null,
-      "prix_ht": "390 €"
-    },
-    {
       "code": "MERC-2027-01-08",
       "formation": "MERC",
       "debut": "2027-01-08",
@@ -146,5 +135,5 @@
       "prix_ht": "720 €"
     }
   ],
-  "genere_le": "2026-11-19T11:00:32.238Z"
+  "genere_le": "2026-11-28T04:00:59.384Z"
 }
